@@ -16,3 +16,5 @@ for (i in 1:10) {
     html_table() %>% .[[1]]
   data <- rbind.data.frame(data, tablas)
 }
+
+#dafldjflaksdjlksajdlfñasdlsa
