@@ -16,5 +16,4 @@ for (i in 1:10) {
     html_table() %>% .[[1]]
   data <- rbind.data.frame(data, tablas)
 }
-
-#dafldjflaksdjlksajdlfñasdlsa
+ave.image("C:/Users/lalmari/OneDrive - FTI Consulting/Documentos/MeCa/Taller_1/Taller1_GEIH_2023/Stores/RawData.RData")
