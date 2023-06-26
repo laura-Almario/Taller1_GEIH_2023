@@ -82,26 +82,3 @@ IC_edad_mujer
 IC_edad_hombre
 
 df$predict_gender<-ifelse(df$mujer==1, predict(modelob), predict(modelob1))
-
-Base_genero_mujer<-subset(df, mujer==1)
-Base_genero_mujer$mujer_pred<-predict(modelob)
-g_mujer_p<-ggplot(Base_genero_mujer, aes(x = age, y = mujer_pred)) + geom_point(colour = "orange1") + labs(x = "Edad", y = "Predicción Ingresos Mujer")
-
-
-Base_genero_hombre<-subset(df, mujer==0)
-Base_genero_hombre$hombre_pred<-predict(modelob1)
-g_hombre_p<-ggplot(Base_genero_hombre, aes(x = age, y = hombre_pred)) + geom_point(colour = "steelblue1") + labs(x = "Edad", y = " Predicción Ingresos Hombre")
-
-
-ggarrange(g1, g_mujer_p, g_hombre_p, nrow = 1, ncol = 3)
-
-#Graficas
-
-cor(df$log_y_total_m, df$predict_gender)
-ggplot(df, aes(x = predict_gender, y = log_y_total_m)) +
-  geom_point() +
-  geom_abline(intercept = 0, slope = 1, color = "green")
-
-g1<-ggplot(df, aes(x = age, y = log_y_total_m)) + geom_point(colour = "darkcyan") + labs(x = "Edad", y = "Ingresos Totales")
-
-g2<-ggplot(df, aes(x = age, y = predict_gender)) + geom_point(colour = "violetred2") + labs(x = "Edad", y = "Ingresos Totales Predicha")
