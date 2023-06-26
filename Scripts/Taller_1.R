@@ -1,19 +1,77 @@
-## Taller 1 - GEIH ##
-## Equipo: Laura Almario, Daniel Orjuela, Daniela Rojas, Anamaria Rodriguez ##
+#PROBLEM SET 1
+#BIG DATA Y MACHINE LEARNING
+#LAURA ALMARIO, DANIELA ROJAS, ANAMARIA RODRIGUEZ Y DANIEL ORJUELA
 
+#PUNTO 1
+#limpiamos el ambiente
+rm(list = ls())
 ## 1. Llamado de los paquetes de datos y librerias ##
 library(pacman)
-p_load("tidyverse", "rvest", "writexl", "stargazer", "ggplot2", "reshape2", "dplyr", "datasets", "skimr", "gridExtra", "datapasta")
+p_load("tidyverse", "rvest", "writexl", "stargazer", "ggplot2", "reshape2", "dplyr", "datasets", "skimr", "gridExtra")
 library(data.table)
 
 ## 2. Sraping de los datos (Chunks 1 a 10)
-url <- "https://ignaciomsarmiento.github.io/GEIH2018_sample/pages/geih_page_"
-data <- data.frame()
-for (i in 1:10) {
-  url_i <- paste0(url, i, ".html")
-  tablas <- url_i %>%
-    read_html() %>%
-    html_table() %>% .[[1]]
-  data <- rbind.data.frame(data, tablas)
+base_url = "https://ignaciomsarmiento.github.io/GEIH2018_sample/"
+base_webpage <- read_html(base_url)
+lists_pages = html_nodes(base_webpage, "ul li")
+
+df = data.frame()
+for (row in lists_pages){
+  a = html_node(row, "a")
+  val <- html_attr(a, "href")
+  if (val != "index.html") {
+    df_temp = data.frame()
+    data_base_url <- paste0(base_url,val)
+    webpage <- read_html(data_base_url)
+    hidden_page = html_nodes(webpage, "div[w3-include-html]")
+    hidden_page_value <- html_attr(hidden_page, "w3-include-html")
+    data_page = paste0(base_url,hidden_page_value)
+    data_html <- read_html(data_page)
+    rows <- html_nodes(data_html, "table tr")
+    text <- html_text(rows)
+    cleaned_text <- gsub("\\s+", " ", text)
+    df_temp = read.table(text=cleaned_text, header=TRUE)
+    df = rbind(df_temp, df)
+  }
 }
-ave.image("C:/Users/lalmari/OneDrive - FTI Consulting/Documentos/MeCa/Taller_1/Taller1_GEIH_2023/Stores/RawData.RData")
+
+#Data Cleaning
+#filtramos la base de datos para tener los ocupados mayores de 18 años y seleccionamos las variables de interés
+
+df <- df[df$age > 18 & df$ocu == 1, c("age", "cuentaPropia", "formal", "hoursWorkUsual", "maxEducLevel", "ocu", "oficio", "estrato1", "informal","p6050", "relab", "sex", "sizeFirm", "wap", "y_total_m")]
+df <- subset(df, !is.na(y_total_m) & y_total_m != 0)
+df$maxEducLevel[is.na(df$maxEducLevel)] <- 0
+
+df <- df %>%
+  mutate(JHOGAR = recode(p6050, 
+                         `1` = "1", 
+                         `2:9` = "0"))
+df$JHOGAR <- ifelse(is.na(df$JHOGAR), "0", df$JHOGAR)
+
+df <- df %>%
+  mutate(mujer = recode(sex, 
+                        `0` = "1", 
+                        `1` = "0"))
+df$mujer <- ifelse(is.na(df$mujer), "0", df$mujer)
+
+#Nos quedamos con 16397 observaciones despues de restringir la edad
+
+#Visualizamos la estructura de la base de datos
+glimpse(df)
+#view(df)
+
+#Cargar la librería openxlsx para exportar a excel las estadísticas
+library(openxlsx)  
+
+# Calcular las estadísticas descriptivas
+estadisticas <- skim(df)
+class(estadisticas)
+estadisticas_tbl <- as.data.frame(estadisticas)
+
+#para exportar una tabla en excel
+p_load(xlsx)
+write.xlsx(estadisticas_tbl, file = "estadisticas_tbl.xlsx")
+
+##Revisamos los datos faltantes para cada columna
+max(colSums(is.na(df)))
+colSums(is.na(df))")
