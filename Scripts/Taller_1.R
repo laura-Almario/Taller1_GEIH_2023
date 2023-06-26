@@ -2,6 +2,9 @@
 #BIG DATA Y MACHINE LEARNING
 #LAURA ALMARIO, DANIELA ROJAS, ANAMARIA RODRIGUEZ Y DANIEL ORJUELA
 
+
+
+setwd("C:/Users/IPA/Desktop/Big Data/Taller 1")
 #PUNTO 1
 #limpiamos el ambiente
 rm(list = ls())
@@ -37,7 +40,6 @@ for (row in lists_pages){
 
 #Data Cleaning
 #filtramos la base de datos para tener los ocupados mayores de 18 años y seleccionamos las variables de interés
-
 df <- df[df$age > 18 & df$ocu == 1, c("age", "cuentaPropia", "formal", "hoursWorkUsual", "maxEducLevel", "ocu", "oficio", "estrato1", "informal","p6050", "relab", "sex", "sizeFirm", "wap", "y_total_m")]
 df <- subset(df, !is.na(y_total_m) & y_total_m != 0)
 df$maxEducLevel[is.na(df$maxEducLevel)] <- 0
@@ -74,4 +76,39 @@ write.xlsx(estadisticas_tbl, file = "estadisticas_tbl.xlsx")
 
 ##Revisamos los datos faltantes para cada columna
 max(colSums(is.na(df)))
-colSums(is.na(df))")
+colSums(is.na(df))
+
+# Graficamos 
+
+#histograma ingresos
+ggplot(df, aes(x = df$y_total_m)) + geom_histogram() + 
+  labs(x = "Ingreso total", y = "frequency", title = "Ingreso total Acumulado")
+
+#histograma de edad
+ggplot(df, aes(x = df$age)) + geom_histogram() + 
+  labs(x = "Edad", y = "frequency", title = "Edad")
+
+# Ingresos y género
+ggplot(df, aes(x = df$sex, y = df$y_total_m)) +
+  geom_col(colour = "blue4") +
+  labs(x = "Sexo", y = "ingreso total", title = "Ingreso total por sexo")
+
+# Ingresos y Nivel educativo
+ggplot(df, aes(x = df$maxEducLevel, y = df$y_total_m)) +
+  geom_col(colour = "blue") +
+  labs(x = "Nivel educativo", y = "ingreso total", title = "Ingreso total por nivel educativo")
+
+# Ingresos y formalidad
+ggplot(df, aes(x = df$formal, y = df$y_total_m)) +
+  geom_col(colour = "blue") +
+  labs(x = "Formalidad", y = "ingreso total", title = "Ingreso total por formalidad laboral")
+
+# Ingresos y jefatura de hogar
+ggplot(df, aes(x = df$JHOGAR, y = df$y_total_m)) +
+  geom_col(colour = "blue") +
+  labs(x = "Jefatura del hogar", y = "ingreso total", title = "Ingreso total por jefatura del hogar")
+
+# Ingresos y estrato
+ggplot(df, aes(x = df$estrato1, y = df$y_total_m)) +
+  geom_col(colour = "blue") +
+  labs(x = "Estrato", y = "ingreso total", title = "Ingreso total por estrato")
