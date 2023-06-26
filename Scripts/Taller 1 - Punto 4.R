@@ -81,7 +81,7 @@ IC_edad_hombre<-confint(modelob1, level=0.95)
 IC_edad_mujer
 IC_edad_hombre
 
-df$predict_genero<-ifelse(df$mujer==1, predict(modelob), predict(modelob1))
+df$predict_gender<-ifelse(df$mujer==1, predict(modelob), predict(modelob1))
 
 Base_genero_mujer<-subset(df, mujer==1)
 Base_genero_mujer$mujer_pred<-predict(modelob)
@@ -97,7 +97,7 @@ ggarrange(g1, g_mujer_p, g_hombre_p, nrow = 1, ncol = 3)
 
 #Graficas
 
-cor(df$y_total_m, df$predict_gender)
+cor(df$log_y_total_m, df$predict_gender)
 ggplot(df, aes(x = predict_gender, y = log_y_total_m)) +
   geom_point() +
   geom_abline(intercept = 0, slope = 1, color = "green")
