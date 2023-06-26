@@ -94,3 +94,14 @@ g_hombre_p<-ggplot(Base_genero_hombre, aes(x = age, y = hombre_pred)) + geom_poi
 
 
 ggarrange(g1, g_mujer_p, g_hombre_p, nrow = 1, ncol = 3)
+
+#Graficas
+
+cor(df$y_total_m, df$predict_gender)
+ggplot(df, aes(x = predict_gender, y = log_y_total_m)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, color = "green")
+
+g1<-ggplot(df, aes(x = age, y = log_y_total_m)) + geom_point(colour = "darkcyan") + labs(x = "Edad", y = "Ingresos Totales")
+
+g2<-ggplot(df, aes(x = age, y = predict_gender)) + geom_point(colour = "violetred2") + labs(x = "Edad", y = "Ingresos Totales Predicha")
