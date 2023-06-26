@@ -1,0 +1,8 @@
+
+Call:
+lm(formula = res_y ~ res_f, data = df)
+
+Coefficients:
+(Intercept)        res_f  
+  1.438e-17   -2.431e-01  
+

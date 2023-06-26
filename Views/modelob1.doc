@@ -1,0 +1,14 @@
+
+Call:
+lm(formula = log_y_total_m ~ sex + formal + age + I(age^2) + 
+    maxEducLevel + hoursWorkUsual + oficio + relab + sizeFirm + 
+    JHOGAR, data = df)
+
+Coefficients:
+   (Intercept)             sex          formal             age        I(age^2)  
+    10.4457398       0.2431123       0.3812592       0.0564332      -0.0005768  
+  maxEducLevel  hoursWorkUsual          oficio           relab        sizeFirm  
+     0.1545449       0.0149782      -0.0072358       0.0442514       0.1332704  
+       JHOGAR1  
+     0.1197378  
+

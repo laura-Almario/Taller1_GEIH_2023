@@ -1,0 +1,9 @@
+
+Call:
+lm(formula = log_y_total_m ~ age + I(age^2), data = subset(df, 
+    mujer == 1))
+
+Coefficients:
+(Intercept)          age     I(age^2)  
+  12.394575     0.083310    -0.001126  
+
